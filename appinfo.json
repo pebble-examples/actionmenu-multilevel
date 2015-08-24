@@ -1,0 +1,24 @@
+{
+  "uuid": "0EF3F895-1E14-4EA2-B5D0-38951F3686C2",
+  "shortName": "ActionMenu Multi-level",
+  "longName": "ActionMenu Multi-level",
+  "companyName": "Pebble",
+  "versionLabel": "1.0",
+  "sdkVersion": "3",
+  "targetPlatforms": ["basalt"],
+  "watchapp": {
+    "watchface": false
+  },
+  "appKeys": {
+    "dummy": 0
+  },
+  "resources": {
+    "media": [
+      {
+        "type": "png",
+        "name": "ELLIPSIS",
+        "file": "music_icon_ellipsis.png"
+      }
+    ]
+  }
+}
