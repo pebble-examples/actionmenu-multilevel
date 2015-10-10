@@ -3,10 +3,6 @@
 #define LEVEL_1_ITEMS 4
 #define LEVEL_2_ITEMS 3
 
-typedef struct {
-  int type;
-} Context;
-
 typedef enum {
   VibrationTypeShort,
   VibrationTypeLong,
@@ -21,7 +17,7 @@ static TextLayer *s_label_layer;
 static ActionBarLayer *s_action_bar;
 
 static GBitmap *s_ellipsis_bitmap;
-static int s_current_type;
+static VibrationType s_current_type;
 
 static ActionMenu *s_action_menu;
 static ActionMenuLevel *s_root_level, *s_custom_level;
@@ -30,7 +26,7 @@ static ActionMenuLevel *s_root_level, *s_custom_level;
 
 static void action_performed_callback(ActionMenu *action_menu, const ActionMenuItem *action, void *context) {
   // An action was selected, determine which one
-  s_current_type = *(int*)action_menu_item_get_action_data(action);
+  s_current_type = (VibrationType)action_menu_item_get_action_data(action);
 
   // Play this vibration
   static uint32_t segments[5];
@@ -66,20 +62,20 @@ static void init_action_menu() {
 
   // Set up the actions for this level, using action context to pass types
   action_menu_level_add_action(s_root_level, "Short", action_performed_callback, 
-                               &(Context){.type=VibrationTypeShort});
+                              (void *)VibrationTypeShort);
   action_menu_level_add_action(s_root_level, "Long", action_performed_callback, 
-                               &(Context){.type=VibrationTypeLong});
+                               (void *)VibrationTypeLong);
   action_menu_level_add_action(s_root_level, "Double", action_performed_callback, 
-                               &(Context){.type=VibrationTypeDouble});
+                               (void *)VibrationTypeDouble);
   
   // Set up the secondary level's actions
   action_menu_level_add_child(s_root_level, s_custom_level, "Custom Pattern");
   action_menu_level_add_action(s_custom_level, "Custom Fast", action_performed_callback, 
-                               &(Context){.type=VibrationTypeCustomShort});
+                               (void *)VibrationTypeCustomShort);
   action_menu_level_add_action(s_custom_level, "Custom Medium", action_performed_callback, 
-                               &(Context){.type=VibrationTypeCustomMedium});
+                               (void *)VibrationTypeCustomMedium);
   action_menu_level_add_action(s_custom_level, "Custom Slow", action_performed_callback, 
-                               &(Context){.type=VibrationTypeCustomLong});
+                               (void *)VibrationTypeCustomLong);
 }
 
 /*********************************** Clicks ***********************************/
