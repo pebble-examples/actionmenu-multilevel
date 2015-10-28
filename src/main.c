@@ -24,6 +24,7 @@ static TextLayer *s_label_layer;
 static ActionBarLayer *s_action_bar;
 
 static GBitmap *s_ellipsis_bitmap;
+static VibrationType s_current_type;
 
 static ActionMenu *s_action_menu;
 static ActionMenuLevel *s_root_level, *s_custom_level;
@@ -32,18 +33,18 @@ static ActionMenuLevel *s_root_level, *s_custom_level;
 
 static void action_performed_callback(ActionMenu *action_menu, const ActionMenuItem *action, void *context) {
   // An action was selected, determine which one
-  VibrationType type = *(VibrationType*)action_menu_item_get_action_data(action);
+  s_current_type = (VibrationType)action_menu_item_get_action_data(action);
 
   // Play this vibration
   static uint32_t segments[5];
-  switch(type) {
+  switch(s_current_type) {
     case VibrationTypeShort:  vibes_short_pulse();  break;
     case VibrationTypeLong:   vibes_long_pulse();   break;
     case VibrationTypeDouble: vibes_double_pulse(); break;
     default:
       // Create the patten
       for(int i = 0; i < 5; i++) {
-        switch(type) {
+        switch(s_current_type) {
           case VibrationTypeCustomShort:  segments[i] = i * 100; break;
           case VibrationTypeCustomMedium: segments[i] = i * 200; break;
           case VibrationTypeCustomLong:   segments[i] = i * 300; break;
@@ -67,11 +68,11 @@ static void init_action_menu() {
 
   // Set up the actions for this level, using action context to pass types
   action_menu_level_add_action(s_root_level, "Short", action_performed_callback, 
-                               &(Context){.type=VibrationTypeShort});
+                              (void *)VibrationTypeShort);
   action_menu_level_add_action(s_root_level, "Long", action_performed_callback, 
-                               &(Context){.type=VibrationTypeLong});
+                               (void *)VibrationTypeLong);
   action_menu_level_add_action(s_root_level, "Double", action_performed_callback, 
-                               &(Context){.type=VibrationTypeDouble});
+                               (void *)VibrationTypeDouble);
   
   // Create and set up the secondary level, adding it as a child to the root one
   s_custom_level = action_menu_level_create(3);
@@ -79,11 +80,11 @@ static void init_action_menu() {
 
   // Set up the secondary actions
   action_menu_level_add_action(s_custom_level, "Custom Fast", action_performed_callback, 
-                               &(Context){.type=VibrationTypeCustomShort});
+                               (void *)VibrationTypeCustomShort);
   action_menu_level_add_action(s_custom_level, "Custom Medium", action_performed_callback, 
-                               &(Context){.type=VibrationTypeCustomMedium});
+                               (void *)VibrationTypeCustomMedium);
   action_menu_level_add_action(s_custom_level, "Custom Slow", action_performed_callback, 
-                               &(Context){.type=VibrationTypeCustomLong});
+                               (void *)VibrationTypeCustomLong);
 }
 
 /*********************************** Clicks ***********************************/
