@@ -15,7 +15,7 @@
   "resources": {
     "media": [
       {
-        "type": "png",
+        "type": "bitmap",
         "name": "ELLIPSIS",
         "file": "music_icon_ellipsis.png"
       }
