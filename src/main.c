@@ -94,7 +94,7 @@ static void select_click_handler(ClickRecognizerRef recognizer, void *context) {
   ActionMenuConfig config = (ActionMenuConfig) {
     .root_level = s_root_level,
     .colors = {
-      .background = GColorChromeYellow,
+      .background = PBL_IF_COLOR_ELSE(GColorChromeYellow, GColorWhite),
       .foreground = GColorBlack,
     },
     .align = ActionMenuAlignCenter
@@ -146,7 +146,7 @@ static void window_unload(Window *window) {
 
 static void init() {
   s_main_window = window_create();
-  window_set_background_color(s_main_window, GColorChromeYellow);
+  window_set_background_color(s_main_window, PBL_IF_COLOR_ELSE(GColorChromeYellow, GColorWhite));
   window_set_window_handlers(s_main_window, (WindowHandlers) {
     .load = window_load,
     .unload = window_unload,
